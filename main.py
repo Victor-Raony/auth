@@ -1,8 +1,12 @@
+import streamlit as st
+import streamlit_authenticator as stauth
+from dependencies import add_registro, consulta, consulta_geral, cria_tabela
+from time import sleep
+
 def main():
     try:
         consulta_geral()
-    except Exception as e:
-        st.warning(f"Erro ao conectar ao banco de dados: {e}")
+    except:
         cria_tabela()
 
     db_query = consulta_geral()
@@ -73,4 +77,3 @@ def usuario_form():
 
 if __name__ == "__main__":
     main()
-
