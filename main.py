@@ -6,15 +6,14 @@ from time import sleep
 def main():
     try:
         consulta_geral()
+        db_query = consulta_geral()
+
+        registros = {'usernames': {}}
+        for data in db_query:
+            registros['usernames'][data[1]] = {'name' : data[0], 'password' : data[2]}
     except Exception as e:
         st.warning(f"Erro ao conectar ao banco de dados: {e}")
-        cria_tabela()
-
-    db_query = consulta_geral()
-
-    registros = {'usernames': {}}
-    for data in db_query:
-        registros['usernames'][data[1]] = {'name' : data[0], 'password' : data[2]}
+        registros = {'usernames': {}}  # Define uma estrutura vazia caso não consiga conectar ao banco
 
     COOKIE_EXPIRY_DAYS = 30
     authenticator = stauth.Authenticate(
@@ -22,8 +21,8 @@ def main():
         'random_cookie_name',
         'random_signature_key',
         COOKIE_EXPIRY_DAYS,
-
     )
+
     if 'clicou_registrar' not in st.session_state:
         st.session_state['clicou_registrar'] = False
 
@@ -31,7 +30,6 @@ def main():
         login_form(authenticator=authenticator)
     else:
         usuario_form()
-
 
 def login_form(authenticator):
     name, authentication_status, username = authenticator.login('Login')
@@ -47,7 +45,6 @@ def login_form(authenticator):
         if clicou_em_registrar:
             st.session_state['clicou_registrar'] = True
             st.rerun()
-
 
 def confirmation_msg():
     hashed_password = stauth.Hasher([st.session_state.pswrd]).generate()
