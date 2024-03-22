@@ -6,7 +6,8 @@ from time import sleep
 def main():
     try:
         consulta_geral()
-    except:
+    except Exception as e:
+        st.warning(f"Erro ao conectar ao banco de dados: {e}")
         cria_tabela()
 
     db_query = consulta_geral()
