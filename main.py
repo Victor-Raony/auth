@@ -3,6 +3,8 @@ import streamlit_authenticator as stauth
 from dependencies import add_registro, consulta, consulta_geral, cria_tabela
 from time import sleep
 
+st.set_page_config(page_title='Tickets 🔥')
+
 def main():
     try:
         consulta_geral()
